@@ -5,8 +5,13 @@
  */
 package explorer;
 
+import java.awt.Image;
 import java.io.File;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -41,11 +46,6 @@ public class MainForm extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -59,7 +59,6 @@ public class MainForm extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(900, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -73,27 +72,15 @@ public class MainForm extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jScrollPane2);
 
-        jScrollPane1.setViewportView(jList1);
-
-        jSplitPane1.setRightComponent(jScrollPane1);
-
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
-
-        setJMenuBar(jMenuBar1);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 627, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
 
         pack();
@@ -101,6 +88,12 @@ public class MainForm extends javax.swing.JFrame {
 
     // Custom code
     private void customInitComponents() {
+        addTreeControl();
+        addListControl();
+        addMenuBarControl();
+    }
+    private void addTreeControl()
+    {
         jTree1.getSelectionModel().setSelectionMode
            (TreeSelectionModel.SINGLE_TREE_SELECTION);
         jTree1.addTreeSelectionListener(new TreeSelectionListener() {
@@ -111,7 +104,8 @@ public class MainForm extends javax.swing.JFrame {
                 File selectedNode = (File) tree
                     .getLastSelectedPathComponent();
                 if (selectedNode == null) return;
-                updateContent(selectedNode);
+                curFolder = selectedNode;
+                list.updateContent(selectedNode);
             }
         });
     }
@@ -120,18 +114,40 @@ public class MainForm extends javax.swing.JFrame {
 
         jTree1.setModel(fileModel);
         jTree1.setRootVisible(false);
-
+        
     }//GEN-LAST:event_formWindowOpened
     
-    private void updateContent(File directory)
-    {   
-        DefaultListModel model = new DefaultListModel();
-        for (File file : directory.listFiles())
-        {
-            model.addElement(file);
-        }
-        jList1.setModel(model);
+    private void addListControl()
+    {
+        list = new ListView();
+        listScrollPane = new JScrollPane(list);
+        jSplitPane1.setRightComponent(listScrollPane);
     }
+    private void addMenuBarControl()
+    {
+        fileMenuBar = new FileMenuBar();
+        this.setJMenuBar(fileMenuBar);
+    }
+    public File getCurFolder()
+    {
+        return curFolder;
+    }
+    public void setCurFolder(File folder)
+    {
+        curFolder = folder;
+    }
+    
+    //Custom controls
+    private JScrollPane listScrollPane;
+    private ListView list;
+    private FileMenuBar fileMenuBar;
+    private File curFolder;
+    
+    //Get, set
+    public ListView getListView() { return this.list; }
+    
+    
+    // End of custome code
     /**
      * @param args the command line arguments
      */
@@ -161,14 +177,9 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTree jTree1;

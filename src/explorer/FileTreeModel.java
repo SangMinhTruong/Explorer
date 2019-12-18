@@ -5,6 +5,7 @@
  */
 package explorer;
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Arrays;
  
 import javax.swing.event.TreeModelListener;
@@ -37,7 +38,8 @@ public class FileTreeModel implements TreeModel {
         else
         {
             File f = (File) parent;
-            return f.listFiles()[index];
+            
+            return f.listFiles(new FileModelFilter())[index];
         }
     }
 
@@ -55,7 +57,7 @@ public class FileTreeModel implements TreeModel {
                 if (!f.isDirectory() && f.list() != null) {
                         return 0;
                 } else {
-                        return f.list().length;
+                        return f.listFiles(new FileModelFilter()).length;
                 }
             } 
             catch (NullPointerException ex) {
@@ -67,7 +69,7 @@ public class FileTreeModel implements TreeModel {
     @Override
     public boolean isLeaf(Object node) {
         File f = (File) node;
-        return !(f.isDirectory() || root.getPath().equals(f.getPath())) && !f.isFile();
+        return !f.isDirectory() && !root.getPath().equals(f.getPath());
     }
 
     @Override
@@ -101,4 +103,10 @@ public class FileTreeModel implements TreeModel {
             // TODO Auto-generated method stub
     }
  
+}
+class FileModelFilter implements FileFilter {
+    @Override
+    public boolean accept(File current) {
+        return current.isDirectory() && !current.isHidden();
+    }
 }
