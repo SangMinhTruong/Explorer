@@ -34,6 +34,7 @@ public class ListView extends JList {
                 listMouseClicked(evt);
             }
         });
+        this.addMouseListener(new RightClickMenuListener());
     }
     private void listMouseClicked(java.awt.event.MouseEvent evt) {                                    
         JList list = (JList)evt.getSource();

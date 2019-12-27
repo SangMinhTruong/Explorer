@@ -141,11 +141,15 @@ public class MainForm extends javax.swing.JFrame {
     private JScrollPane listScrollPane;
     private ListView list;
     private FileMenuBar fileMenuBar;
+
     private File curFolder;
     
     //Get, set
     public ListView getListView() { return this.list; }
     
+    public FileMenuBar getFileMenuBar() {
+        return fileMenuBar;
+    }
     
     // End of custome code
     /**

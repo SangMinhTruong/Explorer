@@ -31,6 +31,24 @@ import javax.swing.JOptionPane;
 public class FileMenuBar extends JMenuBar {
     
     private JMenu fileMenu, editMenu, aboutMenu;
+
+    private JMenuItem copyItem, deleteItem, renameItem, pasteItem;
+
+    public JMenuItem getCopyItem() {
+        return copyItem;
+    }
+
+    public JMenuItem getDeleteItem() {
+        return deleteItem;
+    }
+
+    public JMenuItem getRenameItem() {
+        return renameItem;
+    }
+
+    public JMenuItem getPasteItem() {
+        return pasteItem;
+    }
     private int editOption = 0;
     private File curFile;
     public FileMenuBar()
@@ -64,7 +82,7 @@ public class FileMenuBar extends JMenuBar {
     {
         editMenu = new JMenu("Edit");
         
-        JMenuItem copyItem = new JMenuItem("Copy");
+        copyItem = new JMenuItem("Copy");
         copyItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 MainForm topFrame = (MainForm) Frame.getFrames()[0];
@@ -78,7 +96,7 @@ public class FileMenuBar extends JMenuBar {
                     return;
             }
         });
-        JMenuItem pasteItem = new JMenuItem("Paste");
+        pasteItem = new JMenuItem("Paste");
         pasteItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 MainForm topFrame = (MainForm) Frame.getFrames()[0];
@@ -101,7 +119,7 @@ public class FileMenuBar extends JMenuBar {
                     return;
             }
         });
-        JMenuItem deleteItem = new JMenuItem("Delete");
+        deleteItem = new JMenuItem("Delete");
         deleteItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 int a = JOptionPane.showConfirmDialog(null, "Delete this file?", "Delete this file?", JOptionPane.YES_NO_OPTION);
@@ -125,7 +143,7 @@ public class FileMenuBar extends JMenuBar {
                 }
             }
         });
-        JMenuItem renameItem = new JMenuItem("Rename");
+        renameItem = new JMenuItem("Rename");
         renameItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
                 MainForm topFrame = (MainForm) Frame.getFrames()[0];
