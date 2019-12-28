@@ -7,11 +7,14 @@ package explorer;
 
 import java.awt.Image;
 import java.io.File;
+import java.util.Stack;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -46,6 +49,10 @@ public class MainForm extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -72,15 +79,63 @@ public class MainForm extends javax.swing.JFrame {
 
         jSplitPane1.setLeftComponent(jScrollPane2);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/back.png"))); // NOI18N
+        jButton1.setEnabled(false);
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton1MousePressed(evt);
+            }
+        });
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/forward.png"))); // NOI18N
+        jButton2.setToolTipText("");
+        jButton2.setEnabled(false);
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton2MousePressed(evt);
+            }
+        });
+
+        jTextField1.setEditable(false);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 759, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2)))
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 900, Short.MAX_VALUE)
+            .addComponent(jSplitPane1)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE))
         );
 
         pack();
@@ -104,8 +159,19 @@ public class MainForm extends javax.swing.JFrame {
                 File selectedNode = (File) tree
                     .getLastSelectedPathComponent();
                 if (selectedNode == null) return;
+                
+                if (curFolder != null)
+                {
+                    backStack.push(curFolder);
+                    forwardStack.clear();
+                    jButton1.setEnabled(true);
+                    jButton2.setEnabled(false);
+                }
                 curFolder = selectedNode;
-                list.updateContent(selectedNode);
+                jTextField1.setText(selectedNode.getAbsolutePath());
+                
+                
+                list.updateContentStack(selectedNode);
             }
         });
     }
@@ -116,6 +182,33 @@ public class MainForm extends javax.swing.JFrame {
         jTree1.setRootVisible(false);
         
     }//GEN-LAST:event_formWindowOpened
+
+    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        if (!backStack.isEmpty())
+        {
+            File file = backStack.pop();
+            forwardStack.push(curFolder);
+            jButton2.setEnabled(true);
+
+            list.updateContentStack(file);
+            
+        }
+        if (backStack.isEmpty())
+            jButton1.setEnabled(false);
+    }//GEN-LAST:event_jButton1MousePressed
+
+    private void jButton2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MousePressed
+        if (!forwardStack.isEmpty())
+        {
+            File file = forwardStack.pop();
+            backStack.push(curFolder);
+            jButton1.setEnabled(true);
+
+            list.updateContentStack(file);
+        }
+        if (forwardStack.isEmpty())
+            jButton2.setEnabled(false);
+    }//GEN-LAST:event_jButton2MousePressed
     
     private void addListControl()
     {
@@ -128,14 +221,6 @@ public class MainForm extends javax.swing.JFrame {
         fileMenuBar = new FileMenuBar();
         this.setJMenuBar(fileMenuBar);
     }
-    public File getCurFolder()
-    {
-        return curFolder;
-    }
-    public void setCurFolder(File folder)
-    {
-        curFolder = folder;
-    }
     
     //Custom controls
     private JScrollPane listScrollPane;
@@ -143,6 +228,8 @@ public class MainForm extends javax.swing.JFrame {
     private FileMenuBar fileMenuBar;
 
     private File curFolder;
+    private Stack<File> backStack = new Stack<>();
+    private Stack<File> forwardStack = new Stack<>();
     
     //Get, set
     public ListView getListView() { return this.list; }
@@ -150,7 +237,36 @@ public class MainForm extends javax.swing.JFrame {
     public FileMenuBar getFileMenuBar() {
         return fileMenuBar;
     }
+
+    public JTextField getDirectoryTextField() {
+        return jTextField1;
+    }
+
+    public Stack<File> getBackStack() {
+        return backStack;
+    }
+
+    public Stack<File> getForwardStack() {
+        return forwardStack;
+    }
+
+    public JButton getBackButton() {
+        return jButton1;
+    }
+
+    public JButton getForwardButton() {
+        return jButton2;
+    }
     
+    public File getCurFolder()
+    {
+        return curFolder;
+    }
+    
+    public void setCurFolder(File folder)
+    {
+        curFolder = folder;
+    }
     // End of custome code
     /**
      * @param args the command line arguments
@@ -173,7 +289,6 @@ public class MainForm extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MainForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -183,9 +298,13 @@ public class MainForm extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTree jTree1;
     // End of variables declaration//GEN-END:variables
 } 

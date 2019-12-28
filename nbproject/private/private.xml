@@ -5,9 +5,11 @@
         <group>
             <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/ListIconCellRenderer.java</file>
             <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/ListEntry.java</file>
+            <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/RightClickMenu.java</file>
             <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/FileTreeModel.java</file>
             <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/FileMenuBar.java</file>
             <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/ListView.java</file>
+            <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/RightClickMenuListener.java</file>
             <file>file:/C:/Users/Max/Documents/Homework/Java/Explorer/src/explorer/MainForm.java</file>
         </group>
     </open-files>

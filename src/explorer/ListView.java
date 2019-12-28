@@ -44,13 +44,36 @@ public class ListView extends JList {
             if (item.getValue().isDirectory())
             {
                 MainForm topFrame = (MainForm) Frame.getFrames()[0];
-                topFrame.setCurFolder(item.getValue());
+                
                 updateContent(item.getValue());
             }
         }
     }    
     public void updateContent(File directory)
     {   
+        updateList(directory);
+        
+        MainForm topFrame = (MainForm) Frame.getFrames()[0];
+        topFrame.getDirectoryTextField().setText(directory.getAbsolutePath());
+        
+
+        topFrame.getBackStack().push(topFrame.getCurFolder());
+        topFrame.getForwardStack().clear();
+        topFrame.getBackButton().setEnabled(true);
+        topFrame.getForwardButton().setEnabled(false);
+        
+        topFrame.setCurFolder(directory);
+        
+    }
+    public void updateContentStack(File directory)
+    {
+        updateList(directory);
+        MainForm topFrame = (MainForm) Frame.getFrames()[0];
+        topFrame.getDirectoryTextField().setText(directory.getAbsolutePath());
+        topFrame.setCurFolder(directory);
+    }
+    private void updateList(File directory)
+    {
         FileListModel model = new FileListModel();
         for (File file : directory.listFiles())
         {
