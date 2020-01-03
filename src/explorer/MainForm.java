@@ -34,6 +34,7 @@ public class MainForm extends javax.swing.JFrame {
     public MainForm() {
         initComponents();
         customInitComponents();
+        this.setTitle("Explorer");
     }
 
     /**
@@ -230,7 +231,8 @@ public class MainForm extends javax.swing.JFrame {
     private File curFolder;
     private Stack<File> backStack = new Stack<>();
     private Stack<File> forwardStack = new Stack<>();
-    
+    private File curCopyFile = null;
+    private File curCutFile = null;
     //Get, set
     public ListView getListView() { return this.list; }
     
@@ -266,6 +268,26 @@ public class MainForm extends javax.swing.JFrame {
     public void setCurFolder(File folder)
     {
         curFolder = folder;
+    }
+    
+    public File getCurCopyFile()
+    {
+        return curCopyFile;
+    }
+    
+    public void setCurCopyFile(File folder)
+    {
+        curCopyFile = folder;
+    }
+    
+    public File getCurCutFile()
+    {
+        return curCutFile;
+    }
+    
+    public void setCurCutFile(File folder)
+    {
+        curCutFile = folder;
     }
     // End of custome code
     /**

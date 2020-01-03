@@ -16,7 +16,6 @@ import javax.swing.ListCellRenderer;
  */
 public class ListIconCellRenderer extends JLabel implements ListCellRenderer
 {
-    private JLabel label;
   
     public Component getListCellRendererComponent(JList list, Object value,
                                                   int index, boolean isSelected,

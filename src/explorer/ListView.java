@@ -82,7 +82,8 @@ public class ListView extends JList {
                 resourceStr = "resources/file.png";
             else
                 resourceStr = "resources/folder.png";
-            model.addElement(new ListEntry(file, new ImageIcon(getClass().getClassLoader().getResource(resourceStr))));
+            model.addElement(new ListEntry(file, new ImageIcon(getClass()
+                    .getClassLoader().getResource(resourceStr))));
         }
         
         model.sort();
