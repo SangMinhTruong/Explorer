@@ -11,8 +11,8 @@ Explorer features basic file exploring in Windows environment along with functio
 ## Usage
 You can use the program by clicking on the tree view on the left or the list view on the right for exploring, using buttons and menu options for functions.
 ## Download
-You can get the program or the source code for free from the [Releases Page](https://github.com/SangMinhTruong/visual-explorer/releases), or the following url:
-[https://github.com/SangMinhTruong/visual-explorer/releases](https://github.com/SangMinhTruong/visual-explorer/releases)
+You can get the program or the source code for free from the [Releases Page](https://github.com/SangMinhTruong/Explorer/releases), or the following url:
+[https://github.com/SangMinhTruong/Explorer/releases](https://github.com/SangMinhTruong/Explorer/releases)
 ## Author
 The program was originally made by:
 * Trương Minh Sang
